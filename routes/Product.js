@@ -46,7 +46,7 @@ router.get('/:type', getAllProducts);
 router.get('/best', getTopBestsellingProducts);
 
 // Get Product By ID - Public
-router.get('/:id', getProductById);
+router.get('/single/:id', getProductById);
 
 // Update Product - Admin Only
 router.put(

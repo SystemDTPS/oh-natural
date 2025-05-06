@@ -2,18 +2,26 @@ const Product = require('../models/Product');
 const { validationResult } = require('express-validator');
 const _ = require('lodash');
 const Category = require('../models/Category');
-// Get Product Using ID router.param code
-exports.getProductUsingId = (req,res,next,id) => {
-    Product.findById(id).populate('category', 'name description').exec((err,product) => {
-        if(err || !product) {
-            return res.status(400).json({
-                error: "Product not found"
-            });
-        }
-        req.product = product;
-        next();
-    });
-}
+exports.getProductUsingId = async (req, res, next, id) => {
+    try {
+      const product = await Product.findById(id).populate('category', 'name description');
+      
+      if (!product) {
+        return res.status(400).json({
+          error: "Product not found"
+        });
+      }
+  
+      req.product = product;
+      next();
+      
+    } catch (err) {
+      return res.status(400).json({
+        error: "Error fetching product"
+      });
+    }
+  };
+  
 
 // Create Product
 exports.createProduct = async (req, res) => {
@@ -59,7 +67,6 @@ exports.createProduct = async (req, res) => {
 // Get All Products
 exports.getAllProducts = async (req, res) => {
     const {type} = req.params
-    console.log(type);
     
     try {
         if(type === 'all'){
@@ -104,7 +111,7 @@ exports.getProductById = async (req, res) => {
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
-
+        
         res.status(200).json(product);
     } catch (error) {
         res.status(500).json({ message: error.message });
