@@ -133,13 +133,13 @@ exports.updateProduct = async (req, res) => {
         }
 
         const { category } = req.body;
+        let images = null
         // Check if images are uploaded
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ message: 'No images uploaded!' });
+        if (req.files) {
+            images = req.files.map(file => file.path);
         }
 
         // Extract image URLs from uploaded files
-        const images = req.files.map(file => file.path);
 
         // If category is being changed, update the category references
         if (category && category !== String(updatedProduct.category)) {
