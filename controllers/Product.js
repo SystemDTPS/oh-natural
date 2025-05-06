@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const { validationResult } = require('express-validator');
 const _ = require('lodash');
+const { cloudinary } = require('../services/cloudinary.service'); // Import cloudinary
 const Category = require('../models/Category');
 exports.getProductUsingId = async (req, res, next, id) => {
     try {
@@ -118,7 +119,6 @@ exports.getProductById = async (req, res) => {
     }
 };
 
-// Update Product
 exports.updateProduct = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -133,6 +133,7 @@ exports.updateProduct = async (req, res) => {
         }
 
         const { category } = req.body;
+        const { images } = req.files;  // Get the new images from the request
 
         // If category is being changed, update the category references
         if (category && category !== String(updatedProduct.category)) {
@@ -149,6 +150,25 @@ exports.updateProduct = async (req, res) => {
             updatedProduct.category = category;
         }
 
+        // Handle image updates (if any new images are uploaded)
+        if (images && images.length > 0) {
+            // First, delete old images from Cloudinary
+            updatedProduct.images.forEach(image => {
+                const publicId = image.split('/').pop().split('.')[0];  // Extract public ID from image path
+                cloudinary.uploader.destroy(publicId, (err, result) => {
+                    if (err) {
+                        console.error("Error deleting image:", err);
+                    } else {
+                        console.log("Image deleted:", result);
+                    }
+                });
+            });
+
+            // Replace with new images (uploaded to Cloudinary)
+            updatedProduct.images = images.map(file => file.path);  // Assuming `file.path` is the image URL from Cloudinary
+        }
+
+        // Update the product with the new data
         updatedProduct = _.extend(updatedProduct, req.body);
         updatedProduct.updatedAt = Date.now();
 
@@ -159,6 +179,7 @@ exports.updateProduct = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 // Delete Product
 exports.deleteProduct = async (req, res) => {
