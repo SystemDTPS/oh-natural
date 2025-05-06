@@ -9,9 +9,23 @@ const app = express();
 
 app.use(express.json());  
 app.use(cookieParser());
+const allowedOrigins = [
+  'https://oh-natural.netlify.app',
+  'http://localhost:3000',
+  // Add other allowed origins here
+];
+
 app.use(cors({
-  origin: '*', // or use '*' for all origins (not recommended for production)
-  credentials: true,              // if you're sending cookies/auth headers
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 }));
 
 // Importing Routes
