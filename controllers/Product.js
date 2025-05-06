@@ -58,9 +58,26 @@ exports.createProduct = async (req, res) => {
 
 // Get All Products
 exports.getAllProducts = async (req, res) => {
+    const {type} = req.params
+    console.log(type);
+    
     try {
-        const products = await Product.find().populate('category', 'name description');
-        res.status(200).json(products);
+        if(type === 'all'){
+            const products = await Product.find().populate('category', 'name description');
+            res.status(200).json(products);
+        }else if(type === 'newly'){
+            const products = await Product.find({newlyLaunched: true}).populate('category', 'name description');
+            res.status(200).json(products);
+        }else{
+            const products = await Product.find({
+                $or: [
+                  { name: { $regex: type, $options: 'i' } },
+                  { description: { $regex: type, $options: 'i' } }
+                ]
+              }).populate('category', 'name description');
+
+            res.status(200).json(products);
+        }
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

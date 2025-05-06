@@ -42,7 +42,7 @@ router.post('/',
 ); 
 
 // Get All Products - Public
-router.get('/', getAllProducts);
+router.get('/:type', getAllProducts);
 router.get('/best', getTopBestsellingProducts);
 
 // Get Product By ID - Public
