@@ -43,7 +43,7 @@ router.post('/',
 
 // Get All Products - Public
 router.get('/:type', getAllProducts);
-router.get('/best', getTopBestsellingProducts);
+router.get('/top/best', getTopBestsellingProducts);
 
 // Get Product By ID - Public
 router.get('/single/:id', getProductById);
