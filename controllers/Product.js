@@ -171,7 +171,7 @@ exports.updateProduct = async (req, res) => {
             });
 
             // Replace with new images (uploaded to Cloudinary)
-            updatedProduct.images = images.map(file => file.path);  // Assuming `file.path` is the image URL from Cloudinary
+            updatedProduct.images = images  // Assuming `file.path` is the image URL from Cloudinary
         }
 
         // Update the product with the new data
