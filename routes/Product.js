@@ -51,6 +51,7 @@ router.get('/single/:id', getProductById);
 // Update Product - Admin Only
 router.put(
     '/:id',
+    upload.array('images', 10), 
     [
         body('price').optional().isFloat({ gt: 0 }).withMessage('Price must be a positive number'),
         body('stock').optional().isInt({ min: 0 }).withMessage('Stock cannot be negative')
