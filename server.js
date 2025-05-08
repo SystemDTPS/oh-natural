@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cookieParser());
 const allowedOrigins = [
   'https://oh-natural.netlify.app',
-  'http://localhost:3000',
+  'http://localhost:5173',
   // Add other allowed origins here
 ];
 
@@ -32,12 +32,14 @@ app.use(cors({
 const userRoutes = require('./routes/User');
 const productRoutes = require('./routes/Product');
 const categoryRoutes = require('./routes/Category');
+const settingsRoutes = require('./routes/Settings');
 
 dbConfig()
 
 app.use('/api/users',userRoutes)
 app.use('/api/products',productRoutes)
 app.use('/api/category',categoryRoutes)
+app.use('/api/settings',settingsRoutes)
 
 app.get('/ping', (req, res) => {
     res.send('Pong');
