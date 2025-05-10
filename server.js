@@ -10,6 +10,8 @@ const app = express();
 app.use(express.json());  
 app.use(cookieParser());
 const allowedOrigins = [
+  'https://oh-natural.com',
+  'https://www.oh-natural.com/',
   'https://oh-natural.netlify.app',
   'http://localhost:5173',
   // Add other allowed origins here
