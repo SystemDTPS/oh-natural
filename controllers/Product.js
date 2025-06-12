@@ -137,6 +137,9 @@ exports.getMustardSesameOils = async (req,res) => {
             return res.status(404).json({message: 'Faild to get the mustard/coconut oils'})
         }
 
+        console.log(mustard, coconut);
+        
+
         return res.status(200).json([...mustard, ...coconut])
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -161,6 +164,8 @@ exports.getAlmondSesameGroundnutOils = async (req,res) => {
                   { description: { $regex: 'almond', $options: 'i' } }
                 ]
               }).limit(1))
+        console.log(sesame, ground,almond);
+
 
         if(!sesame || !ground){
             return res.status(404).json({message: 'Faild to get the sesame/groundnut oils'})
