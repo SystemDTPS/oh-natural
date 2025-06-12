@@ -121,12 +121,12 @@ exports.getProductById = async (req, res) => {
 
 exports.getMustardSesameOils = async (req,res) => {
     try {
-        const [mustard,coconut] = Promise.all(await Product.find({
+        const [mustard,coconut] = await Promise.all(Product.find({
                 $or: [
                   { name: { $regex: 'mustard', $options: 'i' } },
                   { description: { $regex: 'mustard', $options: 'i' } }
                 ]
-              }).limit(2), await Product.find({
+              }).limit(2), Product.find({
                 $or: [
                   { name: { $regex: 'coconut', $options: 'i' } },
                   { description: { $regex: 'coconut', $options: 'i' } }
@@ -145,17 +145,17 @@ exports.getMustardSesameOils = async (req,res) => {
 
 exports.getAlmondSesameGroundnutOils = async (req,res) => {
     try {
-        const [sesame,ground,almond] = Promise.all(await Product.find({
+        const [sesame,ground,almond] = await Promise.all(Product.find({
                 $or: [
                   { name: { $regex: 'sesame', $options: 'i' } },
                   { description: { $regex: 'sesame', $options: 'i' } }
                 ]
-              }).limit(1), await Product.find({
+              }).limit(1), Product.find({
                 $or: [
                   { name: { $regex: 'ground', $options: 'i' } },
                   { description: { $regex: 'ground', $options: 'i' } }
                 ]
-              }).limit(1), await Product.find({
+              }).limit(1), Product.find({
                 $or: [
                   { name: { $regex: 'almond', $options: 'i' } },
                   { description: { $regex: 'almond', $options: 'i' } }
