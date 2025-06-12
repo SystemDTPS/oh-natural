@@ -3,6 +3,7 @@ const { validationResult } = require('express-validator');
 const _ = require('lodash');
 const { cloudinary } = require('../services/cloudinary.service'); // Import cloudinary
 const Category = require('../models/Category');
+
 exports.getProductUsingId = async (req, res, next, id) => {
     try {
       const product = await Product.findById(id).populate('category', 'name description');
@@ -23,7 +24,6 @@ exports.getProductUsingId = async (req, res, next, id) => {
     }
   };
   
-
 // Create Product
 exports.createProduct = async (req, res) => {
     const errors = validationResult(req);
@@ -118,6 +118,63 @@ exports.getProductById = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.getMustardSesameOils = async (req,res) => {
+    try {
+        const [mustard,coconut] = Promise.all(await Product.find({
+                $or: [
+                  { name: { $regex: 'mustard', $options: 'i' } },
+                  { description: { $regex: 'mustard', $options: 'i' } }
+                ]
+              }).limit(2), await Product.find({
+                $or: [
+                  { name: { $regex: 'coconut', $options: 'i' } },
+                  { description: { $regex: 'coconut', $options: 'i' } }
+                ]
+              }).limit(2))
+
+        if(!mustard || !coconut){
+            return res.status(404).json({message: 'Faild to get the mustard/coconut oils'})
+        }
+
+        return res.status(200).json([...mustard, ...coconut])
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+exports.getAlmondSesameGroundnutOils = async (req,res) => {
+    try {
+        const [sesame,ground,almond] = Promise.all(await Product.find({
+                $or: [
+                  { name: { $regex: 'sesame', $options: 'i' } },
+                  { description: { $regex: 'sesame', $options: 'i' } }
+                ]
+              }).limit(1), await Product.find({
+                $or: [
+                  { name: { $regex: 'ground', $options: 'i' } },
+                  { description: { $regex: 'ground', $options: 'i' } }
+                ]
+              }).limit(1), await Product.find({
+                $or: [
+                  { name: { $regex: 'almond', $options: 'i' } },
+                  { description: { $regex: 'almond', $options: 'i' } }
+                ]
+              }).limit(1))
+
+        if(!mustard || !coconut){
+            return res.status(404).json({message: 'Faild to get the sesame/groundnut oils'})
+        }
+
+        return res.status(200).json([
+            ...sesame,
+            ...ground,
+            ...almond
+        ])
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 exports.updateProduct = async (req, res) => {
     const errors = validationResult(req);

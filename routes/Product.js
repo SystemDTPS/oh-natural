@@ -7,7 +7,9 @@ const {
     updateProduct, 
     deleteProduct ,
     getProductUsingId,
-    getTopBestsellingProducts
+    getTopBestsellingProducts,
+    getMustardSesameOils,
+    getAlmondSesameGroundnutOils
 } = require('../controllers/Product');
 const { isSignedIn, isAdmin } = require('../middlewares/AuthMiddleware');
 const { upload } = require('../services/cloudinary.service');
@@ -43,6 +45,8 @@ router.post('/',
 
 // Get All Products - Public
 router.get('/:type', getAllProducts);
+router.get('/muscoco', getMustardSesameOils);
+router.get('/sesgroual', getAlmondSesameGroundnutOils);
 router.get('/top/best', getTopBestsellingProducts);
 
 // Get Product By ID - Public
