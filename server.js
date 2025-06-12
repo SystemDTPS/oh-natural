@@ -38,6 +38,11 @@ const settingsRoutes = require('./routes/Settings');
 
 dbConfig()
 
+app.use((req, res, next) => {
+  console.log(`Incoming request: ${req.method} ${req.url}`);
+  next();
+});
+
 app.use('/api/users',userRoutes)
 app.use('/api/products',productRoutes)
 app.use('/api/category',categoryRoutes)

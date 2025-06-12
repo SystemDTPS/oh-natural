@@ -45,8 +45,9 @@ router.post('/',
 
 // Get All Products - Public
 router.get('/:type', getAllProducts);
-router.get('/muscoco', getMustardSesameOils);
-router.get('/sesgroual', getAlmondSesameGroundnutOils);
+
+router.get('/pds/mustard', getMustardSesameOils);
+router.get('/pds/sesame', getAlmondSesameGroundnutOils);
 router.get('/top/best', getTopBestsellingProducts);
 
 // Get Product By ID - Public

@@ -121,7 +121,8 @@ exports.getProductById = async (req, res) => {
 
 exports.getMustardSesameOils = async (req,res) => {
     try {
-        const [mustard,coconut] = await Promise.all(Product.find({
+        
+        const [mustard,coconut] = await Promise.all([Product.find({
                 $or: [
                   { name: { $regex: 'mustard', $options: 'i' } },
                   { description: { $regex: 'mustard', $options: 'i' } }
@@ -131,14 +132,11 @@ exports.getMustardSesameOils = async (req,res) => {
                   { name: { $regex: 'coconut', $options: 'i' } },
                   { description: { $regex: 'coconut', $options: 'i' } }
                 ]
-              }).limit(2))
+              }).limit(2)])
 
         if(!mustard || !coconut){
             return res.status(404).json({message: 'Faild to get the mustard/coconut oils'})
         }
-
-        console.log(mustard, coconut);
-        
 
         return res.status(200).json([...mustard, ...coconut])
     } catch (error) {
@@ -148,7 +146,8 @@ exports.getMustardSesameOils = async (req,res) => {
 
 exports.getAlmondSesameGroundnutOils = async (req,res) => {
     try {
-        const [sesame,ground,almond] = await Promise.all(Product.find({
+
+        const [sesame,ground,almond] = await Promise.all([Product.find({
                 $or: [
                   { name: { $regex: 'sesame', $options: 'i' } },
                   { description: { $regex: 'sesame', $options: 'i' } }
@@ -163,8 +162,7 @@ exports.getAlmondSesameGroundnutOils = async (req,res) => {
                   { name: { $regex: 'almond', $options: 'i' } },
                   { description: { $regex: 'almond', $options: 'i' } }
                 ]
-              }).limit(1))
-        console.log(sesame, ground,almond);
+              }).limit(1)])
 
 
         if(!sesame || !ground){
