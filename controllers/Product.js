@@ -162,7 +162,7 @@ exports.getAlmondSesameGroundnutOils = async (req,res) => {
                 ]
               }).limit(1))
 
-        if(!mustard || !coconut){
+        if(!sesame || !ground){
             return res.status(404).json({message: 'Faild to get the sesame/groundnut oils'})
         }
 
